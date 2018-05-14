@@ -1,25 +1,72 @@
 import React from 'react';
+import SelectField from 'material-ui/SelectField';
+import TextField from 'material-ui/TextField';
+import RadioButton, { RadioButtonGroup } from 'material-ui/RadioButton';
+import { MenuItem } from 'material-ui/Menu';
+import Toggle from 'material-ui/Toggle';
 
-const MultipleChoice = ({ question, options, index, value, changeValue }) =>  {
+const MultipleChoice = ({ options, id, value, changeValue }) =>  {
 
     const handleChange = (event) => {
-        changeValue(index, event.target.value);
+        changeValue(id, event.target.value);
     };
     
     const optionElements = options.map((option, i) => {
         return (
-            <div className="option">
-              <input type="radio" name={index} key={i} value={i}/>
-              {option}
-            </div>
+            <RadioButton key={i}
+                         label={option}
+                         value={i}/>
         );
     });
     return (
-        <div className="MultipleChoice" onChange={handleChange}>
-          <label>{question}</label>
-          {optionElements}
-        </div>
+        <RadioButtonGroup onChange={handleChange}
+                          name={id}
+                          labelPosition="right">
+          { optionElements }
+        </RadioButtonGroup>
     );
 };
 
-export { MultipleChoice };
+const TextArea = ({ id, value, changeValue }) => {
+    const handleChange = (event) => {
+        changeValue(id, event.target.value);
+    };
+
+
+    return (
+        <TextField onChange={handleChange}
+                   name={id}/>
+    );
+};
+
+const Select = ({ options, id, value, changeValue }) => {
+    const handleChange = (event) => {
+        changeValue(id, event.target.value);
+    };
+
+    const menuElements = options.map((option, i) => {
+        return (
+            <MenuItem key={i}
+                      label={option}
+                      value={i}/>
+        );
+    });
+    
+    return (
+        <SelectField>
+          { menuElements }
+        </SelectField>
+    );
+};
+
+const Switch = ({ id, value, changeValue }) => {
+    const handleChange = (event, isInputChecked) => {
+        changeValue(id, isInputChecked);
+    };
+
+    return (
+        <Toggle onToggle={handleChange}/>
+    );
+};
+
+export { MultipleChoice, TextArea };

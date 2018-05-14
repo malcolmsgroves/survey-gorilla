@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_12_184339) do
+ActiveRecord::Schema.define(version: 2018_05_14_133418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "mc_answers", force: :cascade do |t|
+    t.bigint "response_id"
+    t.bigint "question_id"
+    t.integer "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_mc_answers_on_question_id"
+    t.index ["response_id"], name: "index_mc_answers_on_response_id"
+  end
 
   create_table "questions", force: :cascade do |t|
     t.text "options"
@@ -25,10 +35,32 @@ ActiveRecord::Schema.define(version: 2018_05_12_184339) do
     t.index ["survey_id"], name: "index_questions_on_survey_id"
   end
 
+  create_table "responses", force: :cascade do |t|
+    t.bigint "survey_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["survey_id"], name: "index_responses_on_survey_id"
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.string "user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "txt_answers", force: :cascade do |t|
+    t.bigint "response_id"
+    t.bigint "question_id"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_txt_answers_on_question_id"
+    t.index ["response_id"], name: "index_txt_answers_on_response_id"
+  end
+
+  add_foreign_key "mc_answers", "questions"
+  add_foreign_key "mc_answers", "responses"
+  add_foreign_key "responses", "surveys"
+  add_foreign_key "txt_answers", "questions"
+  add_foreign_key "txt_answers", "responses"
 end

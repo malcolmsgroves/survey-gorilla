@@ -3,7 +3,7 @@
 
 5.times do
   survey = Survey.create(user: Faker::Name.name)
-  3.times do
+  2.times do
     question = survey.questions.build
     question.question = Faker::Lorem.sentence(5)
     answers = []
@@ -11,7 +11,14 @@
       answers.push(Faker::Lorem.word)
     end
     question.options = answers
-    question.type = "mc"
+    question.question_type = "mc"
+    question.save
+  end
+
+  2.times do
+    question = survey.questions.build
+    question.question = Faker::Lorem.sentence(5)
+    question.question_type = "txt"
     question.save
   end
 end
