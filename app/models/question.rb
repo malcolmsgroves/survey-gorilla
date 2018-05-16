@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   has_many :mc_answers
   has_many :txt_answers
+  has_many :date_answers
   belongs_to :survey
   serialize :options
 
