@@ -32,7 +32,22 @@ class SurveyConstructor extends Component {
     }
 
     handleAddClick() {
-
+        this.setState((prev) => {
+            let newState = prev;
+            newState.questions.push(
+                {
+                    question: prev.addQuestion.question,
+                    question_type: prev.addQuestion.type,
+                    options: prev.addQuestion.options
+                }
+            );
+            newState.addQuestion = {
+                type: null,
+                question: null,
+                options: [""]
+            };
+            return newState;
+        });;
     }
     
     handleAddQuestion(event, key, value) {
@@ -68,9 +83,10 @@ class SurveyConstructor extends Component {
     }
 
     handleDeleteOption(i) {
+        console.log(i);
         this.setState((prev) => {
             let newState = prev;
-            newState.addQuestion.options.splice(i, 1);
+            newState.addQuestion.options.splice(i, 1);   
             return newState;
         });
     }
@@ -92,26 +108,30 @@ class SurveyConstructor extends Component {
                           index={i}
                           value={null}
                           changeValue={foo}
-                          type={question.question_type}/>
+                          type={question.question_type}
+                          options={question.options}/>
             );
         });
-        console.log(this.handleDeleteOption);
+
         return (
             <div className="survey_constructor">
               <SelectField onChange={this.handleAddQuestion}
                            children={questionOptionElements}
                            value={this.state.addQuestion.type}/>
-              { this.state.addQuestion.type &&
-                  <QuestionConstructor changeOption={this.handleChangeOption}
-                                           changeQuestion={this.handleChangeQuestion}
-                                           addOption={this.handleAddOption}
-                                           question={this.state.addQuestion}
-                                           deleteOption={this.handleDeleteOption}/>
+              { this.state.addQuestion.type && 
+                  <div>
+                        <QuestionConstructor changeOption={this.handleChangeOption}
+                                                 changeQuestion={this.handleChangeQuestion}
+                                                 addOption={this.handleAddOption}
+                                                 question={this.state.addQuestion}
+                                                 deleteOption={this.handleDeleteOption}/>
+                            
+                            <RaisedButton type="addQuestion"
+                                              label="Add"
+                                              primary={true}
+                                              onClick={this.handleAddClick}/>
+                      </div>
               }
-              <RaisedButton type="addQuestion"
-                            label="Add"
-                            secondary={true}
-                            onClick={this.handleAddClick}/>
               { questionElements }
             </div>
         );

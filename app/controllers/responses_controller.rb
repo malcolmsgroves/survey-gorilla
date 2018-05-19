@@ -8,6 +8,8 @@ class ResponsesController < ApplicationController
         @response.mc_answers.create(answer.slice(:value, :question_id))
       when "txt"
         @response.txt_answers.create(answer.slice(:value, :question_id))
+      when "date"
+        @response.date_answers.create(answer.slice(:value, :question_id))
       end
     end
   end
